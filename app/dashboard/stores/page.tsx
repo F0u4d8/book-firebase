@@ -1,5 +1,4 @@
 import { lusitana } from '@/components/shared/fonts'
-import Search from '@/components/shared/search'
 import CustomersTable from '@/components/shared/stores/table'
 import { Metadata } from 'next'
 

@@ -15,19 +15,18 @@ export async function fetchDashboardData() {
         const stores = [];
         let totalOrders = 0;
         let totalRevenue = 0;
-        const monthlyRevenue : Record<string, number > = {};
-        const latestOrders : latestOrdersType[] = [];
+        const monthlyRevenue: Record<string, number> = {};
+        const latestOrders: latestOrdersType[] = [];
 
-        // Prepare month keys for last 12 months
+        // Initialize monthlyRevenue keys for the last 12 months
         const twelveMonthsAgo = new Date();
         twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
-        const monthKeys = Array.from({ length: 12 }, (_, i) => {
+        for (let i = 0; i < 12; i++) {
             const date = new Date();
             date.setMonth(date.getMonth() - i);
             const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
             monthlyRevenue[monthKey] = 0;
-            return monthKey;
-        });
+        }
 
         const storeFetchPromises = storeSnapshot.docs.map(async (storeDoc) => {
             const storeData: StoreType = { id: storeDoc.id, ...storeDoc.data() };
@@ -78,10 +77,10 @@ export async function fetchDashboardData() {
             .sort((a, b) => b.createdAt - a.createdAt)
             .slice(0, 5);
 
-      // Prepare monthly revenue as sorted array
-const monthlyRevenueArray: MonthlyRevenueType = Object.entries(monthlyRevenue)
-.map(([month, revenue]) => ({ month, revenue: revenue as number })) // Explicit cast
-.sort((a, b) => a.month.localeCompare(b.month));
+        // Prepare monthly revenue as a sorted array
+        const monthlyRevenueArray: MonthlyRevenueType = Object.entries(monthlyRevenue)
+            .map(([month, revenue]) => ({ month, revenue: revenue as number })) // Explicit cast
+            .sort((a, b) => a.month.localeCompare(b.month));
 
         return {
             storeCount: stores.length,
@@ -96,6 +95,7 @@ const monthlyRevenueArray: MonthlyRevenueType = Object.entries(monthlyRevenue)
         throw error;
     }
 }
+
 
 export async function fetchStores() {
     try {

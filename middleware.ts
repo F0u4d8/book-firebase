@@ -26,7 +26,7 @@ export default async function middleware(request: NextRequest) {
 
   const session = request.cookies.get(SESSION_COOKIE_NAME)?.value || '';
   const jwtToken = request.cookies.get('jwtcookie')?.value || '';
-  const decodedJwtToken = jwt.decode(jwtToken) as UserInfo | null;
+  const decodedJwtToken = jwt.decode(jwtToken) as any | null;
 
   // Redirect to login if session or token is missing
   if (!session || !jwtToken || !decodedJwtToken) {

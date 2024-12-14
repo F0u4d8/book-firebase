@@ -1,10 +1,10 @@
 export declare interface UserInfo {
     id : string 
-    address : string
-    email : string
-  name:string
-  phoneNumber : Number
-  userType : string
+    address? : string
+    email? : string
+  name? :string
+  phoneNumber? : number
+  userType? : string
   } 
 
 
@@ -21,14 +21,7 @@ export type FormattedCustomersTable = {
 
 
 
-export declare interface UserInfo {
-  id : string 
-  address : string
-  email : string
-name:string
-phoneNumber : Number
-userType : string
-} 
+
 
 export declare interface latestOrdersType {
 id : string ,

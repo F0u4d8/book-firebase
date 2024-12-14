@@ -45,11 +45,16 @@ export async function removeSession() {
   }
 }
 
-export const loginWithCreds = async (state: any, formData: FormData) => {
+export const loginWithCreds = async (state: unknown, formData: FormData) => {
   const rawFormData = {
     email: formData.get("email"),
     password: formData.get("password"),
   };
+
+  if (typeof rawFormData.email !== 'string' || typeof rawFormData.password !== 'string') {
+    throw new Error('Email and password must be provided');
+  }
+
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -63,7 +68,7 @@ export const loginWithCreds = async (state: any, formData: FormData) => {
    const userDocRef = doc(db, "users",uid );
    const userDoc = await getDoc(userDocRef);
 
-   let userData = { uid }; // Default user data with UID
+   let userData : UserInfo = { id:uid }; // Default user data with UID
    if (userDoc.exists()) {
      userData = { ...userData, ...userDoc.data() }; // Merge Firestore data
    } else {
@@ -77,9 +82,9 @@ export const loginWithCreds = async (state: any, formData: FormData) => {
     } else {
       return "error";
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Login error:", error);
-    return { error: error.message };
+    return { error: error };
   }
 
   redirect(ADMIN_ROUTE);

@@ -43,14 +43,13 @@ export async function fetchStoreData(storeId: string) {
         // Prepare month keys for the last 12 months
         const twelveMonthsAgo = new Date();
         twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
-
-        const monthKeys = Array.from({ length: 12 }, (_, i) => {
+        for (let i = 0; i < 12; i++) {
             const date = new Date();
             date.setMonth(date.getMonth() - i);
             const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
             monthlyRevenue[monthKey] = 0;
-            return monthKey;
-        });
+        }
+      
 
         // Process orders
         ordersSnapshot.forEach((orderDoc) => {

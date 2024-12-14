@@ -3,7 +3,7 @@ import { lusitana } from '../fonts'
 import { cn } from '@/lib/utils'
 import { latestOrdersType } from '@/lib/dashboardTypes'
 
-export default async function LatestInvoices({orders} : any) {
+export default async function LatestInvoices({orders} :  { orders: latestOrdersType[] }) {
  
 
 
