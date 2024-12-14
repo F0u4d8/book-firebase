@@ -7,15 +7,7 @@ export const metadata: Metadata = {
   title: 'Stores',
 }
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams?: {
-    query?: string
-    page?: string
-  }
-}) {
-  const query = searchParams?.query || ''
+export default async function Page() {
 
 
   return (
