@@ -15,7 +15,6 @@ export default function AppLogo() {
           alt={`Book app logo`}
           priority
         />
-        <span className="text-xl">Book App</span>
       </div>
     </Link>
   )
