@@ -1,7 +1,7 @@
 import { db } from "@/firebaseClient";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { format } from "date-fns";
-import { ClientStoreData, latestOrdersType, StoreType } from "../dashboardTypes";
+import { ClientStoreData, ClientType, latestOrdersType, StoreType } from "../dashboardTypes";
 
 export async function fetchStoreData(storeId: string) {
     try {
@@ -21,6 +21,15 @@ export async function fetchStoreData(storeId: string) {
             getDocs(clientsCollectionRef),
             getDoc(storeDocRef),
         ]);
+const clients : ClientType[] = []
+ // Process clients
+ clientsSnapshot.forEach((clientDoc) => {
+  const clientData = clientDoc.data();
+  clients.push({
+      id: clientDoc.id,
+      ...clientData,
+  });
+});
 
         // Check if the store document exists
         if (!storeSnapshot.exists()) {
@@ -89,13 +98,13 @@ export async function fetchStoreData(storeId: string) {
             .sort((a, b) => a.month.localeCompare(b.month));
 
         return {
-            totalOrders,
+            totalOrders,storeId,
             totalRevenue,
             totalClients: clientsSnapshot.size,
             storeName,storeAddress,
             storeEmail,storeImage,
             latestOrders: sortedLatestOrders,
-            monthlyRevenue: monthlyRevenueArray,
+            monthlyRevenue: monthlyRevenueArray,clients
         };
     } catch (error) {
         console.error("Error fetching store data:", error);
@@ -141,19 +150,27 @@ export async function findClientAcrossStores(clientId: string): Promise<ClientSt
               storeName: storeData.name || "Unknown Store",
               storeAddress: storeData.address || "Unknown Address",
               storeEmail: storeData.email || "Unknown Email",
-              storeImage: storeData.image || "/default-store.png",
+              storeImage: storeData.image || "/no-image.png",
               clientId: userData?.id,
               clientName: userData?.name || "Unknown Client",
               clientEmail: userData?.email || "Unknown Email",
-              availableCups: userData?.availableCups || 0
+              availableCups: clientData?.availableCups || 0
             };
           }
         }
       }
-  
-      // If no matching client found in any store
-      console.log(`Client ${clientId} not found in any store`);
-      return undefined;
+      const userData = userDoc.data();
+
+      return {
+        storeName:  "No Store",
+        storeAddress: "Unknown store Address",
+        storeEmail:  "Unknown store Email",
+        storeImage:  "/no-image.png",
+        clientId: userData?.id,
+        clientName: userData?.name || "Unknown Client",
+        clientEmail: userData?.email || "Unknown Email",
+        availableCups: userData?.availableCups || 0 
+      };
   
     } catch (error) {
       console.error("Error finding client across stores:", error);

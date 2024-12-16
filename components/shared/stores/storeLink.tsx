@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-const StoreLink = ({ id , image , name , type }: { id: string , image: string ,name?: string , type:string }) => {
+const StoreLink = ({ id , image , name , type }: { id: string , image?: string ,name?: string , type:string }) => {
     const router = useRouter();
 
     return (

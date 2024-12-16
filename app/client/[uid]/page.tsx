@@ -12,14 +12,13 @@ const page =  async ({ params }: { params: Promise<{ uid: string }> }) => {
 
 
   const result = await findClientAcrossStores(uid);
-  console.log(result);
   
   if (result) {
-    const { storeName, storeAddress, clientName, clientEmail, storeEmail, storeImage ,availableCups} = result
+    const { storeName, storeAddress, clientName, clientEmail, storeEmail, storeImage ,availableCups ,storeId} = result
     return (
       <div className="flex flex-col h-screen md:flex-row md:overflow-hidden">
             <div className="w-full flex-none md:w-52 bg-secondary">
-              <SideNav image={storeImage} name={storeName} email={storeEmail} address={storeAddress} />
+              <SideNav storeId={storeId} image={storeImage} name={storeName} email={storeEmail} address={storeAddress} />
             </div>
             <div className="grow p-6 md:overflow-y-auto ">  <main>
             <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>{`${clientName} Dashboard`}

@@ -29,7 +29,7 @@ export default async function middleware(request: NextRequest) {
   const decodedJwtToken = jwt.decode(jwtToken) as any | null;
 
 
-
+  decodedJwtToken.userType
 
   // Redirect to login if session or token is missing
   if (!session || !jwtToken || !decodedJwtToken) {

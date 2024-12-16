@@ -58,3 +58,12 @@ export type ClientStoreData = {
   storeImage?: string;
   [key: string]: any; // Allow additional properties
 }
+
+
+
+export type ClientType = {
+  id : string
+  name?: string;
+  email?: string;
+  availableCups? : number ;
+}
