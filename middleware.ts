@@ -7,7 +7,6 @@ import {
   CLIENT_ROUTE,
 } from './lib/constants';
 import jwt from 'jsonwebtoken';
-import { UserInfo } from '@/lib/dashboardTypes';
 
 const protectedRoutes = [ADMIN_ROUTE, STORE_ROUTE, CLIENT_ROUTE];
 

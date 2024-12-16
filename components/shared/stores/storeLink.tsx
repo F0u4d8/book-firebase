@@ -1,10 +1,9 @@
 "use client";
 
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-const StoreLink = ({ id , image , name , type }: { id: string , image?: string ,name?: string , type:string }) => {
+const StoreLink = ({ id, name , type }: { id: string , image?: string ,name?: string , type:string }) => {
     const router = useRouter();
 
     return (
@@ -13,13 +12,7 @@ const StoreLink = ({ id , image , name , type }: { id: string , image?: string ,
             onClick={() => router.push(`/${type}/${id}`)}
         >
           <div className="flex items-center gap-3">
-                                   <Image
-                                     src={image || '/no-image.png'} 
-                                     className="rounded-full"
-                                     alt={`${name}'s profile picture`}
-                                     width={28}
-                                     height={28}
-                                   />
+                                 
                                    <p>{name}</p>
                                  </div>
         </td>
