@@ -118,7 +118,6 @@ export async function findClientAcrossStores(clientId: string): Promise<ClientSt
   
       // If user document doesn't exist, return undefined
       if (!userDoc.exists()) {
-        console.log(`User ${clientId} not found`);
         return undefined;
       }
   

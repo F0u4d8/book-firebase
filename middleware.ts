@@ -28,13 +28,16 @@ export default async function middleware(request: NextRequest) {
   const jwtToken = request.cookies.get('jwtcookie')?.value || '';
   const decodedJwtToken = jwt.decode(jwtToken) as any | null;
 
+
+
+
   // Redirect to login if session or token is missing
   if (!session || !jwtToken || !decodedJwtToken) {
     const protectedPathPattern = /^\/store\/\w+/;
-
+    const protectedPathPattern2 = /^\/client\/\w+/;
     if (
       protectedRoutes.includes(path) ||
-      protectedPathPattern.test(path)
+      protectedPathPattern.test(path) ||  protectedPathPattern2.test(path)
     ) {
       const loginURL = new URL(ROOT_ROUTE, url.origin);
       return NextResponse.redirect(loginURL.toString());
@@ -42,14 +45,15 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+
   // If session is active and user tries to access root, redirect based on userType
   if (path === ROOT_ROUTE) {
     let redirectRoute = ADMIN_ROUTE; // Default to admin
 
     if (decodedJwtToken.userType === 'store') {
-      redirectRoute = `${STORE_ROUTE}/${decodedJwtToken.uid}`;
+      redirectRoute = `${STORE_ROUTE}/${decodedJwtToken.id}`;
     } else if (decodedJwtToken.userType === 'client') {
-      redirectRoute = CLIENT_ROUTE;
+      redirectRoute = `${CLIENT_ROUTE}/${decodedJwtToken.id}`;
     }
 
     const absoluteURL = new URL(redirectRoute, url.origin);
@@ -58,7 +62,7 @@ export default async function middleware(request: NextRequest) {
 
   // Handle specific user types and their routes
   if (decodedJwtToken.userType === 'store') {
-    const dynamicStoreRoute = `${STORE_ROUTE}/${decodedJwtToken.uid}`;
+    const dynamicStoreRoute = `${STORE_ROUTE}/${decodedJwtToken.id}`;
 
     // Allow store user only on their specific routes
     if (
@@ -68,10 +72,8 @@ export default async function middleware(request: NextRequest) {
       const storeURL = new URL(dynamicStoreRoute, url.origin);
       return NextResponse.redirect(storeURL.toString());
     }
-  }
-
-  if (decodedJwtToken.userType === 'client') {
-    const dynamicStoreRoute = `${CLIENT_ROUTE}/${decodedJwtToken.uid}`;
+  } else if (decodedJwtToken.userType === 'client') {
+    const dynamicStoreRoute = `${CLIENT_ROUTE}/${decodedJwtToken.id}`;
 
     // Allow store user only on their specific routes
     if (

@@ -10,6 +10,6 @@ export const ITEMS_PER_PAGE = Number(process.env.ITEMS_PER_PAGE) || 5
 export const ROOT_ROUTE = '/';
 export const STORE_ROUTE = '/store';
 export const ADMIN_ROUTE = '/dashboard';
-export const CLIENT_ROUTE = '/clientpage';
+export const CLIENT_ROUTE = '/client';
 
 export const SESSION_COOKIE_NAME = 'user_session';
