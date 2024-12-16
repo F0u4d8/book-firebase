@@ -71,10 +71,15 @@ export default async function middleware(request: NextRequest) {
   }
 
   if (decodedJwtToken.userType === 'client') {
-    // Redirect clients away from admin routes
-    if (path.startsWith(ADMIN_ROUTE)) {
-      const clientURL = new URL(CLIENT_ROUTE, url.origin);
-      return NextResponse.redirect(clientURL.toString());
+    const dynamicStoreRoute = `${CLIENT_ROUTE}/${decodedJwtToken.uid}`;
+
+    // Allow store user only on their specific routes
+    if (
+      !path.startsWith(dynamicStoreRoute) &&
+      !path.startsWith( CLIENT_ROUTE)
+    ) {
+      const storeURL = new URL(dynamicStoreRoute, url.origin);
+      return NextResponse.redirect(storeURL.toString());
     }
   }
 

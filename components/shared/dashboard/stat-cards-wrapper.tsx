@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { BanknoteIcon, ClockIcon, InboxIcon, UsersIcon ,StoreIcon } from 'lucide-react'
+import { BanknoteIcon, ClockIcon, InboxIcon, UsersIcon ,StoreIcon ,CupSoda } from 'lucide-react'
 import { lusitana } from '../fonts'
 
 const iconMap = {
@@ -7,15 +7,23 @@ const iconMap = {
   customers: UsersIcon,
   pending: ClockIcon,
   invoices: InboxIcon,
-  store:StoreIcon
+  store:StoreIcon ,
+  cups : CupSoda
 }
 
-export default async function StatCardsWrapper({data} :{ data: Partial<{ storeCount: number; totalOrders: number; userCount: number; totalRevenue: number; totalClients: number }> }) {
+export default async function StatCardsWrapper({data} :{ data: Partial<{availableCups: number; storeCount: number; totalOrders: number; userCount: number; totalRevenue: number; totalClients: number }> }) {
 
 
   return (
     <>
-      <StatCard title="Total" value={`${data.totalRevenue} SAR`}type="collected" />
+   {data.totalRevenue !== undefined && 
+        <StatCard
+        title="Total"
+        value={data.totalRevenue}
+        type="collected"
+      />
+      }
+
       
       {data.totalOrders !== undefined && 
        <StatCard title="Total orders" value={data.totalOrders} type="invoices" />
@@ -28,6 +36,15 @@ export default async function StatCardsWrapper({data} :{ data: Partial<{ storeCo
         type="store"
       />
       }
+
+{data.availableCups !== undefined && 
+        <StatCard
+        title="Total available cups"
+        value={data.availableCups}
+        type="cups"
+      />
+      }
+
 
 {data.userCount !== undefined && 
          <StatCard
@@ -55,7 +72,7 @@ export function StatCard({
 }: {
   title: string
   value: number | string
-  type: 'invoices' | 'customers' | 'pending' | 'collected' | 'store' 
+  type: 'invoices' | 'customers' | 'pending' | 'collected' | 'store' | 'cups'
 }) {
   const Icon = iconMap[type]
 

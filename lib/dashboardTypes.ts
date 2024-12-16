@@ -47,3 +47,14 @@ export type StoreType = {
   clientCount?: number;
   [key: string]: any; // For additional fields in the store document
 };
+
+
+export type ClientStoreData = {
+  storeName?: string;
+  storeAddress?: string;
+  clientName: string;
+  clientEmail: string;
+  storeEmail?: string;
+  storeImage?: string;
+  [key: string]: any; // Allow additional properties
+}

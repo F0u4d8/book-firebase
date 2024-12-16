@@ -1,7 +1,7 @@
 import { db } from "@/firebaseClient";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { format } from "date-fns";
-import { latestOrdersType } from "../dashboardTypes";
+import { ClientStoreData, latestOrdersType, StoreType } from "../dashboardTypes";
 
 export async function fetchStoreData(storeId: string) {
     try {
@@ -102,3 +102,64 @@ export async function fetchStoreData(storeId: string) {
         throw error;
     }
 }
+
+
+
+
+
+
+export async function findClientAcrossStores(clientId: string): Promise<ClientStoreData | undefined> {
+    try {
+      const userDocRef = doc(db, "users", clientId);
+      const [userDoc, storeSnapshot] = await Promise.all([
+        getDoc(userDocRef),
+        getDocs(collection(db, "stores"))
+      ]);
+  
+      // If user document doesn't exist, return undefined
+      if (!userDoc.exists()) {
+        console.log(`User ${clientId} not found`);
+        return undefined;
+      }
+  
+      for (const storeDoc of storeSnapshot.docs) {
+        const storeData: StoreType = { id: storeDoc.id, ...storeDoc.data() };
+        
+        // Get clients subcollection for this store
+        const clientsSnapshot = await getDocs(
+          collection(db, "stores", storeDoc.id, "clients")
+        );
+  
+        for (const clientDoc of clientsSnapshot.docs) {
+          const clientData = clientDoc.data();
+          
+          // Check if this client matches the target client ID
+          if (clientData.id === clientId) {
+            const userData = userDoc.data();
+  
+            return {
+              storeId: storeDoc.id,
+              storeName: storeData.name || "Unknown Store",
+              storeAddress: storeData.address || "Unknown Address",
+              storeEmail: storeData.email || "Unknown Email",
+              storeImage: storeData.image || "/default-store.png",
+              clientId: userData?.id,
+              clientName: userData?.name || "Unknown Client",
+              clientEmail: userData?.email || "Unknown Email",
+              availableCups: userData?.availableCups || 0
+            };
+          }
+        }
+      }
+  
+      // If no matching client found in any store
+      console.log(`Client ${clientId} not found in any store`);
+      return undefined;
+  
+    } catch (error) {
+      console.error("Error finding client across stores:", error);
+      return undefined;
+    }
+  }
+  
+ 

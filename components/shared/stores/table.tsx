@@ -34,7 +34,7 @@ export default async function CustomersTable() {
                         </div>
                         <p className="text-sm text-muted">{customer.email}</p>
                       </div>
-                    </div></Link> ) : ( <div className="flex items-center justify-between border-b pb-4">
+                    </div></Link> ) :  (<Link href={`client/${customer.id}`}> <div className="flex items-center justify-between border-b pb-4">
                       <div>
                         <div className="mb-2 flex items-center">
                           <div className="flex items-center gap-3">
@@ -50,7 +50,7 @@ export default async function CustomersTable() {
                         </div>
                         <p className="text-sm text-muted">{customer.email}</p>
                       </div>
-                    </div>)}
+                    </div> </Link>)}
                    
                     <div className="flex w-full items-center justify-between border-b py-5">
                       <div className="flex w-1/2 flex-col">
@@ -90,20 +90,9 @@ Orders                    </th>
                 <tbody className="divide-y">
                   {stores.map((customer) => (
                     <tr key={customer.id} className="group">
-                        {customer.userType === "store" ? (<StoreLink id={customer.id} image={customer.image} name={customer.name} />
+                        {customer.userType === "store" ? (<StoreLink type='store' id={customer.id} image={customer.image} name={customer.name} />
                        
-                      ): (<td className="whitespace-nowrap  py-5 pl-4 pr-3 text-sm  group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
-                        <div className="flex items-center gap-3">
-                          <Image
-                            src={customer.image || '/no-image.png'} 
-                            className="rounded-full"
-                            alt={`${customer.name}'s profile picture`}
-                            width={28}
-                            height={28}
-                          />
-                          <p>{customer.name}</p>
-                        </div>
-                      </td>) }
+                      ): (<StoreLink type='client' id={customer.id} image={customer.image} name={customer.name} />) }
                       
                       <td className="whitespace-nowrap  px-4 py-5 text-sm">
                         {customer.email}

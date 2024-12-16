@@ -11,10 +11,10 @@ export default function SideNav({
   email,
   address,
 }: {
-  image: string;
-  name: string;
-  email: string;
-  address: string;
+  image: string | undefined;
+  name: string | undefined;
+  email: string | undefined;
+  address: string | undefined;
 }) {
   return (
     <div className="flex h-full flex-col px-4 py-4 md:px-2">
