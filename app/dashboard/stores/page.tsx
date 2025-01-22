@@ -14,15 +14,14 @@ export const metadata: Metadata = {
 export default async function Page({
   searchParams,
 }: {
-  searchParams: {
-    query?: string;
-    page?: string;
-  };
+  searchParams: Promise<{  query?: string;
+      page?: number }>;
 }) {
-  const query = searchParams?.query || null;
-  const currentPage = Number(searchParams?.page) || 1;
-  const totalPages = await fetchStoresPages(query);
 
+   const query = (await searchParams).query ;
+    const currentPage = (await searchParams).page || 1
+    const params = query || null;
+const totalPages = await fetchStoresPages(params)
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
@@ -39,7 +38,7 @@ export default async function Page({
         key={`${query}-${currentPage}`}
         fallback={<CategoriesTableSkeleton />}
       >
-        <CustomersTable query={query} currentPage={currentPage} />
+        <CustomersTable query={params} currentPage={currentPage} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />
