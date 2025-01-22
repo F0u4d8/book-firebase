@@ -72,6 +72,9 @@ importers:
       '@types/firebase':
         specifier: ^3.2.3
         version: 3.2.3
+      '@types/jsonwebtoken':
+        specifier: ^9.0.7
+        version: 9.0.7
       '@types/node':
         specifier: ^20
         version: 20.17.14
